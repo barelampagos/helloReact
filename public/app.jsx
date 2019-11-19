@@ -5,7 +5,7 @@ var Greeter = React.createClass({
 	// render - expects JSX code that gets rendered to browser
 	render: function() {
 		// Grabs fields from props
-		var name = this.props.name;
+		var name = this.state.name;
 		var message = this.props.message;
 
 		// Can only return one Root element in render()
@@ -34,8 +34,23 @@ var Greeter = React.createClass({
 		e.preventDefault();
 
 		// Fetches value from HTML element with ref = name
+		var nameRef = this.refs.name;
 		var name = this.refs.name.value;
-		alert(name);
+		nameRef.value = ''; // Clears input field
+
+		if (typeof name == 'string' && name.length > 0) {
+			// Updates any values initializes in the state
+			this.setState({
+				name: name
+			});
+		}
+	},
+	// getInitialState - React default method. Initializes starting state
+	getInitialState: function() {
+		return {
+			// initializes this.state.name
+			name: this.props.name
+		};
 	}
 });
 
