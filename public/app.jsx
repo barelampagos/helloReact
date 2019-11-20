@@ -1,18 +1,33 @@
 var GreeterMessage = React.createClass({
 	render: function() {
+		var name = this.props.name;
+		var message = this.props.message;
+
 		return (
 			<div>
-				<h1>Some h1</h1>
-				<p>Some p</p>
+				<h1>Hello {name}!</h1>
+				<p>{message}</p>
 			</div>
 		);
 	}
 });
 
 var GreeterForm = React.createClass({
+	onFormSubmit: function(e) {
+		e.preventDefault();
+
+		var name = this.refs.name.value;
+
+		if (name.length > 0) {
+			this.refs.name.value = '';
+
+			// Calls handleNewName()
+			this.props.onNewName(name);
+		}
+	},
 	render: function() {
 		return (
-			<form>
+			<form onSubmit={this.onFormSubmit}>
 				<input type='text' ref='name' />
 				<button>Set Name</button>
 			</form>
@@ -33,17 +48,8 @@ var Greeter = React.createClass({
 		// Can only return one Root element in render()
 		return (
 			<div>
-				<h1>Hello {name}!</h1>
-				<p>{message}</p>
-
-				<GreeterMessage />
-
-				<form onSubmit={this.onButtonClick}>
-					<input type='text' ref='name' />
-					<button>Set Name</button>
-				</form>
-
-				<GreeterForm />
+				<GreeterMessage name={name} message={message} />
+				<GreeterForm onNewName={this.handleNewName} />
 			</div>
 		);
 	},
@@ -55,21 +61,11 @@ var Greeter = React.createClass({
 		};
 	},
 	// Custom app method
-	onButtonClick: function(e) {
-		// Prevents default behavior of form submit & page refresh
-		e.preventDefault();
-
-		// Fetches value from HTML element with ref = name
-		var nameRef = this.refs.name;
-		var name = this.refs.name.value;
-		nameRef.value = ''; // Clears input field
-
-		if (typeof name == 'string' && name.length > 0) {
-			// Updates any values initializes in the state
-			this.setState({
-				name: name
-			});
-		}
+	handleNewName: function(name) {
+		// Updates any values initializes in the state
+		this.setState({
+			name: name
+		});
 	},
 	// getInitialState - React default method. Initializes starting state
 	getInitialState: function() {
