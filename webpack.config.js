@@ -6,6 +6,14 @@ module.exports = {
 		filename: './public/bundle.js'
 	},
 	resolve: {
+		// Where should this happen?
+		root: __dirname,
+		// Define alias for require's --> require('Greeter')
+		alias: {
+			Greeter: 'public/components/Greeter.jsx',
+			GreeterMessage: 'public/components/GreeterMessage.jsx',
+			GreeterForm: 'public/components/GreeterForm.jsx'
+		},
 		// List of file extensions we should be able to process
 		extensions: ['', '.js', '.jsx']
 	},
